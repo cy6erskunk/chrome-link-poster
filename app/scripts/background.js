@@ -2,12 +2,29 @@
 
 var url;
 
+function sendMessageToPage(action) {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {action: action});
+  });
+}
+
+function doPost(data) {
+  var req = new XMLHttpRequest();
+
+  req.onreadystatechange = function () {
+    if (req.readyState === 4) {
+      sendMessageToPage(req.status === 200 ? 'success' : 'error');
+    }
+  };
+
+  req.open('POST', url);
+  req.send(data);
+}
+
 // The onClicked callback function.
 function onClickHandler(info) {
-  console.log('item ' + info.menuItemId + ' was clicked');
-  console.log('URL: ' + info.linkUrl);
-  console.log('Posting to URL:' + url);
-  console.log('Done!');
+  sendMessageToPage('start');
+  doPost(info.linkUrl);
 }
 
 function updateUrl() {
@@ -23,7 +40,7 @@ chrome.contextMenus.onClicked.addListener(onClickHandler);
 
 chrome.runtime.onInstalled.addListener(function () {
   chrome.contextMenus.create({
-    'title': 'Test "link" menu item',
+    'title': 'Post link',
     'contexts': ['link'],
     'id': 'contextLink'
   }, function() {
