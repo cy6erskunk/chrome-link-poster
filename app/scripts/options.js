@@ -1,6 +1,6 @@
 'use strict';
 
-function save_options() {
+function saveOptions() {
   var url = document.getElementById('url-input').value;
 
   chrome.storage.sync.set({
@@ -9,8 +9,8 @@ function save_options() {
     var status = document.getElementById('status');
 
     if (chrome.runtime.lastError) {
-        status.className = 'failure';
-        status.textContent = 'Oops...'
+      status.className = 'failure';
+      status.textContent = 'Oops...';
     }
     // Update status to let user know options were saved.
 
@@ -24,7 +24,7 @@ function save_options() {
 
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
-function restore_options() {
+function restoreOptions() {
   // Use default value color = 'red' and likesColor = true.
   chrome.storage.sync.get({
     url: ''
@@ -33,5 +33,5 @@ function restore_options() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click', save_options);
+document.addEventListener('DOMContentLoaded', restoreOptions);
+document.getElementById('save').addEventListener('click', saveOptions);
