@@ -1,3 +1,26 @@
 body {
   padding: 20px;
 }
+
+#url-input {
+    width: 100%;
+    padding: 1px 2px;
+    font-size: 18px;
+    line-height: 20px;
+}
+.save-wrapper {
+    margin-top: 12px;
+    text-align: right;
+}
+
+#status {
+    margin-right: 12px;
+    display: inline-block;
+}
+
+.success {
+    color: green;
+}
+.failure {
+    color: red;
+}

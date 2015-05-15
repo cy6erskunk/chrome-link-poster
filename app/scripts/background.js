@@ -1,19 +1,27 @@
 'use strict';
 
-chrome.runtime.onInstalled.addListener(function (details) {
-  console.log('previousVersion', details.previousVersion);
-});
+var url;
 
 // The onClicked callback function.
 function onClickHandler(info, tab) {
-    console.log("item " + info.menuItemId + " was clicked");
-    console.log("URL: " + info.linkUrl);
-    // console.log("tab: " + JSON.stringify(tab));
+
+  console.log("item " + info.menuItemId + " was clicked");
+  console.log("URL: " + info.linkUrl);
+  console.log("Posting to URL:" + url);
+  console.log('Done!');
 };
+
+function update_url() {
+  chrome.storage.sync.get({
+    url: ''
+  }, function(items) {
+    url = items.url;
+    console.log('Url updated');
+  });
+}
 
 chrome.contextMenus.onClicked.addListener(onClickHandler);
 
-// Set up context menu tree at install time.
 chrome.runtime.onInstalled.addListener(function() {
   chrome.contextMenus.create({
     "title": "Test 'link' menu item",
@@ -24,4 +32,8 @@ chrome.runtime.onInstalled.addListener(function() {
       console.log("Got error: " + chrome.extension.lastError.message);
     }
   });
+
+  update_url();
 });
+
+chrome.storage.onChanged.addListener(update_url);

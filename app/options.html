@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head>
+    <title>Link poster options</title>
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
@@ -10,7 +11,11 @@
     <!-- endbuild -->
   </head>
   <body>
-    <h1>'Allo, 'Allo!</h1>
+    <h1>URL to post to:</h1>
+    <input type="text" placeholder="http://example.com/post_here" id="url-input"/>
+    <div class="save-wrapper">
+        <span id="status"></span><input type="button" id="save" value="Save">
+    </div>
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
