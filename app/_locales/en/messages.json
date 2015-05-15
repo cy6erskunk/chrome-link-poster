@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "chrome link poster",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "Extension to send selected link to pre-configured host",
+    "description": "The description of the application"
+  }
+}
