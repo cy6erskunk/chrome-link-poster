@@ -2,10 +2,23 @@
 
 var url;
 
-function sendMessageToPage(action) {
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {action: action});
-  });
+function setSuccessBadge() {
+  chrome.browserAction.setBadgeText({ text: 'OK'});
+  chrome.browserAction.setBadgeBackgroundColor({ color: '#3f3'});
+}
+
+function setErrorBadge() {
+  chrome.browserAction.setBadgeText({ text: 'ERR'});
+  chrome.browserAction.setBadgeBackgroundColor({ color: '#f33'});
+}
+
+function setLoadingBadge() {
+  chrome.browserAction.setBadgeText({ text: '...'});
+  chrome.browserAction.setBadgeBackgroundColor({ color: '#f80'});
+}
+
+function resetBadge() {
+  chrome.browserAction.setBadgeText({ text: ''});
 }
 
 function doPost(data) {
@@ -13,7 +26,11 @@ function doPost(data) {
 
   req.onreadystatechange = function () {
     if (req.readyState === 4) {
-      sendMessageToPage(req.status === 200 ? 'success' : 'error');
+      if (req.status === 200) {
+        setSuccessBadge();
+      } else {
+        setErrorBadge();
+      }
     }
   };
 
@@ -23,7 +40,7 @@ function doPost(data) {
 
 // The onClicked callback function.
 function onClickHandler(info) {
-  sendMessageToPage('start');
+  setLoadingBadge();
   doPost(info.linkUrl);
 }
 
@@ -32,7 +49,6 @@ function updateUrl() {
     url: ''
   }, function(items) {
     url = items.url;
-    console.log('Url updated');
   });
 }
 
@@ -53,3 +69,4 @@ chrome.runtime.onInstalled.addListener(function () {
 });
 
 chrome.storage.onChanged.addListener(updateUrl);
+chrome.browserAction.onClicked.addListener(resetBadge);
