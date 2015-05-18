@@ -17,8 +17,17 @@ function setLoadingBadge() {
   chrome.browserAction.setBadgeBackgroundColor({ color: '#f80'});
 }
 
-function resetBadge() {
+function setTitle(title) {
+  if (typeof title === 'undefined') {
+    title = chrome.i18n.getMessage('appName');
+  }
+
+  chrome.browserAction.setTitle({ title: title });
+}
+
+function resetBadgeAndTitle() {
   chrome.browserAction.setBadgeText({ text: ''});
+  setTitle();
 }
 
 function doPost(data) {
@@ -30,18 +39,28 @@ function doPost(data) {
         setSuccessBadge();
       } else {
         setErrorBadge();
+        setTitle(req.status +
+          (req.statusText ? (' (' + req.statusText + ')') : '') +
+          (req.responseText ? (': ' + req.responseText) : ''));
       }
     }
   };
 
   req.open('POST', url);
   req.send(data);
+  setTitle();
 }
 
 // The onClicked callback function.
 function onClickHandler(info) {
   setLoadingBadge();
-  doPost(info.linkUrl);
+  if (!url) {
+    setErrorBadge();
+    setTitle(chrome.i18n.getMessage('emptyDestinationLink'));
+  } else {
+    setTitle();
+    doPost(info.linkUrl);
+  }
 }
 
 function updateUrl() {
@@ -66,7 +85,8 @@ chrome.runtime.onInstalled.addListener(function () {
   });
 
   updateUrl();
+  setTitle();
 });
 
 chrome.storage.onChanged.addListener(updateUrl);
-chrome.browserAction.onClicked.addListener(resetBadge);
+chrome.browserAction.onClicked.addListener(resetBadgeAndTitle);

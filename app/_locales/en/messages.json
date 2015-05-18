@@ -6,5 +6,9 @@
   "appDescription": {
     "message": "Extension to send selected link to pre-configured host",
     "description": "The description of the application"
+  },
+  "emptyDestinationLink": {
+    "message": "Please provide destination URL",
+    "description": "Error message displayed when trying to POST to nowhere"
   }
 }
