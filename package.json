@@ -1,6 +1,6 @@
 {
   "name": "chrome-link-poster",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "dependencies": {},
   "devDependencies": {
     "express": "^4.12.3",
@@ -27,5 +27,6 @@
   },
   "engines": {
     "node": ">=0.8.0"
-  }
+  },
+  "repository": "https://github.com/cy6erskunk/chrome-link-poster.git"
 }
