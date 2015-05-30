@@ -30,6 +30,9 @@ function resetBadgeAndTitle() {
   setTitle();
 }
 
+/**
+ * @param {Object} data
+ */
 function doPost(data) {
   var req = new XMLHttpRequest();
 
@@ -47,7 +50,8 @@ function doPost(data) {
   };
 
   req.open('POST', url);
-  req.send(data);
+  req.setRequestHeader('Content-Type', 'application/json');
+  req.send(JSON.stringify(data));
   setTitle();
 }
 
@@ -59,7 +63,7 @@ function onClickHandler(info) {
     setTitle(chrome.i18n.getMessage('emptyDestinationLink'));
   } else {
     setTitle();
-    doPost(info.linkUrl);
+    doPost({ url: info.linkUrl });
   }
 }
 

@@ -1,18 +1,8 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
 
-app.use(function(req, res, next) {
-  req.rawBody = '';
-  req.setEncoding('utf8');
-
-  req.on('data', function(chunk) {
-    req.rawBody += chunk;
-  });
-
-  req.on('end', function() {
-    next();
-  });
-});
+app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
   res.send('hello world!');
@@ -20,7 +10,7 @@ app.get('/', function(req, res) {
 
 app.post('/ok', function(req, res) {
     res.status('200');
-    console.log(req.rawBody);
+    console.log(req.body);
     setTimeout(function () {
         res.send('OK');
     }, 2000);
